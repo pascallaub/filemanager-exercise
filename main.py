@@ -124,7 +124,7 @@ def search_file():
 
 root = tk.Tk()
 root.title("Filemanager!")
-root.geometry("1280x720")
+root.geometry("950x400")
 
 #Erstellt Container für alle Frames
 container = tk.Frame(root)
