@@ -1,6 +1,7 @@
 import os
 import shutil
 import tkinter as tk
+from tkinter import filedialog
 
 def raise_frame(frame):
     clear_entries(frame)
@@ -32,13 +33,29 @@ def clear_entries(frame):
 #         except ValueError:
 #             print("Gib eine Zahl von 1 - 5 ein!")
 
+source = ""
+destination = ""
+
+def choose_file(frame):
+    global source
+    source = filedialog.askopenfilename()
+    if source:
+        entry1.delete(0, tk.END)
+        entry1.insert(0, source)
+
+def choose_directory(frame):
+    global destination
+    destination = filedialog.askdirectory()
+    if destination:
+        entry2.delete(0, tk.END)
+        entry2.insert(0, destination)
+
 def copy_file():
-    source = entry1.get()
-    destination = entry2.get()
-    source = os.path.normpath(source)
-    destination = os.path.normpath(destination)
-    if directory.strip() == '':     #Homeverzeichnis, wenn keins angegeben wird
-        directory = os.path.expanduser("~")
+    global source, destination
+    if not source or not destination:
+        label17.config(text="Bitte Quelle und Ziel auswählen!")
+        return
+
     try:
         shutil.copy(source, destination)
         label17.config(text=f"Datei kopiert: {source} -> {destination}")
@@ -50,12 +67,7 @@ def copy_file():
         label17.config(text=f"Fehler: {e}")
 
 def move_file():
-    source = entry3.get()
-    destination = entry4.get()
-    source = os.path.normpath(source)
-    destination = os.path.normpath(destination)
-    if directory.strip() == '':     #Homeverzeichnis, wenn keins angegeben wird
-        directory = os.path.expanduser("~")
+    global source, destination
     try:
         shutil.move(source, destination)
         label18.config(text=f"Datei verschoben: {source} -> {destination}")
@@ -112,7 +124,7 @@ def search_file():
 
 root = tk.Tk()
 root.title("Filemanager!")
-root.geometry("600x400")
+root.geometry("1280x720")
 
 #Erstellt Container für alle Frames
 container = tk.Frame(root)
@@ -152,55 +164,67 @@ button5.pack(pady=5)
 
 #Frame 2 Kopieren
 label5 = tk.Label(frame2, text="Kopieren", font=('Helvetica', 20), width=30)
-label5.pack(pady=25)
+label5.grid(row=0, column=0, columnspan=3, pady=25)
 
-label2 = tk.Label(frame2, text="Gib den Quellpfad ein", font=('Helvetica', 14), width=30)
-label2.pack(pady=5)
+label2 = tk.Label(frame2, text="Quellverzeichnis: ", font=('Helvetica', 14), width=30)
+label2.grid(row=1, column=0, pady=5,)
 
 entry1 = tk.Entry(frame2, font=('Helvetica', 14), width=30)
-entry1.pack(pady=5)
+entry1.grid(row=1, column=1, padx=5, pady=5)
+
+button16 = tk.Button(frame2, text="Quelldatei auswählen", command=lambda: choose_file(frame2), width=30)
+button16.grid(row=1, column=2, padx=5, pady=5)
 
 label3 = tk.Label(frame2, text="Gib den Zielpfad ein", font=('Helvetica', 14), width=30)
-label3.pack(pady=5)
+label3.grid(row=2, column=0, pady=5,)
 
 entry2 = tk.Entry(frame2, font=('Helvetica', 14), width=30)
-entry2.pack(pady=5)
+entry2.grid(row=2, column=1, padx=5, pady=5)
+
+button17 = tk.Button(frame2, text="Zielverzeichnis auswählen", command=lambda: choose_directory(frame2), width=30)
+button17.grid(row=2, column=2, padx=5, pady=5)
 
 button6 = tk.Button(frame2, text="Kopieren", command=copy_file, font=('Helvetica', 14), width=30)
-button6.pack(pady=10)
+button6.grid(row=3, column=0, columnspan=3, pady=10)
 
-label17 = tk.Label(frame2, text="", font=('Helvetica', 14), width=30)
-label17.pack(pady=5)
+label17 = tk.Label(frame2, text="", width=60, height=4, wraplength=400, anchor='w', justify='left', font=('Helvetica', 14))
+label17.grid(row=4, column=0, columnspan=3, pady=5)
 label17.output = True
 
 button9 = tk.Button(frame2, text="Zurück", command=lambda: raise_frame(frame1), font=('Helvetica', 14), width=30)
-button9.pack(pady=10)
+button9.grid(row=5, column=0, columnspan=3, pady=10)
 
 #Frame 3 Verschieben
 label4 = tk.Label(frame3, text="Verschieben", font=('Helvetica', 20), width=30)
-label4.pack(pady=25)
+label4.grid(row=0, column=0, columnspan=3, pady=25)
 
 label6 = tk.Label(frame3, text="Gib den Quellpfad ein", font=('Helvetica', 14), width=30)
-label6.pack(pady=5)
+label6.grid(row=1, column=0, pady=5)
 
-entry3 = tk.Entry(frame3, font=('Helvetica', 14), width=30)
-entry3.pack(pady=5)
+entry1 = tk.Entry(frame3, font=('Helvetica', 14), width=30)
+entry1.grid(row=1, column=1, padx=5, pady=5)
+
+button18 = tk.Button(frame3, text="Quelldatei auswählen", command=lambda: choose_file(frame3), width=30)
+button18.grid(row=1, column=2, padx=5, pady=5)
 
 label7 = tk.Label(frame3, text="Gib das Zielverzeichnis an", font=('Helvetica', 14), width=30)
-label7.pack(pady=5)
+label7.grid(row=2, column=0, pady=5)
 
-entry4 = tk.Entry(frame3, font=('Helvetica', 14), width=30)
-entry4.pack(pady=5)
+entry2 = tk.Entry(frame3, font=('Helvetica', 14), width=30)
+entry2.grid(row=2, column=1, padx=5, pady=5)
+
+button19 = tk.Button(frame3, text="Zielpfad auswählen", command=lambda: choose_directory(frame3), width=30)
+button19.grid(row=2, column=2, padx=5, pady=5)
 
 button7 = tk.Button(frame3, text="Verschieben", command=move_file, font=('Helvetica', 14), width=30)
-button7.pack(pady=10)
+button7.grid(row=3, column=0, columnspan=3, pady=10)
 
-label18 = tk.Label(frame3, text="", font=('Helvetica', 14), width=30)
-label18.pack(pady=5)
+label18 = tk.Label(frame3, text="", width=60, height=4, wraplength=400, anchor='w', justify='left', font=('Helvetica', 14))
+label18.grid(row=4, column=0, columnspan=3, pady=5)
 label18.output = True
 
 button8 = tk.Button(frame3, text="Zurück", command=lambda: raise_frame(frame1), font=('Helvetica', 14), width=30)
-button8.pack(pady=10)
+button8.grid(row=5, column=0, columnspan=3, pady=10)
 
 #Frame 4 Umbenennen
 label8 = tk.Label(frame4, text="Umbenennen", font=('Helvetica', 20), width=30)
