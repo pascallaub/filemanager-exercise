@@ -37,62 +37,66 @@ def copy_file():
     destination = entry2.get()
     source = os.path.normpath(source)
     destination = os.path.normpath(destination)
+    if directory.strip() == '':     #Homeverzeichnis, wenn keins angegeben wird
+        directory = os.path.expanduser("~")
     try:
         shutil.copy(source, destination)
-        print(f"Datei kopiert: {source} -> {destination}")
+        label17.config(text=f"Datei kopiert: {source} -> {destination}")
     except FileNotFoundError:
-        print("Datei nicht gefunden!")
+        label17.config(text="Datei nicht gefunden!")
     except PermissionError:
-        print("Fehlende Berechtigung")
+        label17.config(text="Fehlende Berechtigung")
     except Exception as e:
-        print(f"Fehler: {e}")
+        label17.config(text=f"Fehler: {e}")
 
 def move_file():
     source = entry3.get()
     destination = entry4.get()
     source = os.path.normpath(source)
     destination = os.path.normpath(destination)
+    if directory.strip() == '':     #Homeverzeichnis, wenn keins angegeben wird
+        directory = os.path.expanduser("~")
     try:
         shutil.move(source, destination)
-        print(f"Datei verschoben: {source} -> {destination}")
+        label18.config(text=f"Datei verschoben: {source} -> {destination}")
     except FileNotFoundError:
-        print("Datei nicht gefunden!")
+        label18.config(text="Datei nicht gefunden!")
     except PermissionError:
-        print("Fehlende Berechtigung!")
+        label18.config(text="Fehlende Berechtigung!")
     except Exception as e:
-        print(f"Fehler: {e}")
+        label18.config(text=f"Fehler: {e}")
 
 def change_name():
     old_name = entry5.get()
     new_name = entry6.get()
     try:
         os.rename(old_name, new_name)
-        print(f"Datei umbenannt: {old_name} -> {new_name}")
+        label19.config(text=f"Datei umbenannt: {old_name} -> {new_name}")
     except FileNotFoundError:
-        print("Datei nicht gefunden!")
+        label19.config(text="Datei nicht gefunden!")
     except PermissionError:
-        print("Fehlende Berechtigung!")
+        label19.config(text="Fehlende Berechtigung!")
     except Exception as e:
-        print(f"Fehler: {e}")
+        label19.config(text=f"Fehler: {e}")
 
 def delete_file():
     filepath = entry7.get()
     filepath = os.path.normpath(filepath)
     try:
         os.remove(filepath)
-        print(f"Datei gelöscht: {filepath}")
+        label20.config(text=f"Datei gelöscht: {filepath}")
     except FileNotFoundError:
-        print("Datei nicht gefunden!")
+        label20.config(text="Datei nicht gefunden!")
     except PermissionError:
-        print("Fehlende Berechtigung!")
+        label20.config(text="Fehlende Berechtigung!")
     except Exception as e:
-        print("Fehler: {e}")
+        label20.config(text="Fehler: {e}")
 
 def search_file():
     directory = entry8.get()
     file = entry9.get()
-    if directory.strip() == '':     #Aktuelles Verzeichnis, wenn keins angegeben wird
-        directory = os.getcwd()
+    if directory.strip() == '':     #Homeverzeichnis, wenn keins angegeben wird
+        directory = os.path.expanduser("~")
 
     directory = os.path.normpath(directory)
 
@@ -165,6 +169,10 @@ entry2.pack(pady=5)
 button6 = tk.Button(frame2, text="Kopieren", command=copy_file, font=('Helvetica', 14), width=30)
 button6.pack(pady=10)
 
+label17 = tk.Label(frame2, text="", font=('Helvetica', 14), width=30)
+label17.pack(pady=5)
+label17.output = True
+
 button9 = tk.Button(frame2, text="Zurück", command=lambda: raise_frame(frame1), font=('Helvetica', 14), width=30)
 button9.pack(pady=10)
 
@@ -186,6 +194,10 @@ entry4.pack(pady=5)
 
 button7 = tk.Button(frame3, text="Verschieben", command=move_file, font=('Helvetica', 14), width=30)
 button7.pack(pady=10)
+
+label18 = tk.Label(frame3, text="", font=('Helvetica', 14), width=30)
+label18.pack(pady=5)
+label18.output = True
 
 button8 = tk.Button(frame3, text="Zurück", command=lambda: raise_frame(frame1), font=('Helvetica', 14), width=30)
 button8.pack(pady=10)
@@ -209,6 +221,10 @@ entry6.pack(pady=5)
 button10 = tk.Button(frame4, text="Umbenennen", command=change_name, font=('Helvetica', 14), width=30)
 button10.pack(pady=10)
 
+label19 = tk.Label(frame4, text="", font=('Helvetica', 14), width=30)
+label19.pack(pady=5)
+label19.output = True
+
 button11 = tk.Button(frame4, text="Zurück", command=lambda: raise_frame(frame1), font=('Helvetica', 14), width=30)
 button11.pack(pady=10)
 
@@ -224,6 +240,10 @@ entry7.pack(pady=5)
 
 button12 = tk.Button(frame5, text="Löschen", command=delete_file, font=('Helvetica', 14), width=30)
 button12.pack(pady=10)
+
+label20 = tk.Label(frame5, text="", font=('Helvetica', 14), width=30)
+label20.pack(pady=5)
+label20.output = True
 
 button13 = tk.Button(frame5, text="Zurück", command=lambda: raise_frame(frame1), font=('Helvetica', 14), width=30)
 button13.pack(pady=10)
